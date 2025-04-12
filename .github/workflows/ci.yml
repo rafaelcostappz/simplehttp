@@ -1,4 +1,4 @@
-name: CI
+name: CI SimpleHTTP
 
 on:
   push:

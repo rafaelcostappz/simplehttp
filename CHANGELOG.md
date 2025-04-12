@@ -1,5 +1,11 @@
 # simple-http-client
 
+## 2.0.0
+
+### Major Changes
+
+- e44a3af: correcao do changeset
+
 ## 1.0.5
 
 ### Patch Changes

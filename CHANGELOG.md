@@ -1,5 +1,12 @@
 # simple-http-client
 
+## 1.0.3
+
+### Patch Changes
+
+- 83604bf: Correcao Escopo NPM
+- f47d2ec: correcao
+
 ## 1.0.2
 
 ### Patch Changes

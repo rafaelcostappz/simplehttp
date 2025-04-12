@@ -27,8 +27,8 @@ jobs:
         id: changesets
         uses: changesets/action@v1
         with:
-          publish: npm run release:publish
+          publish: npm run release:publish -- --access public
           version: npm run release:apply
         env:
           GITHUB_TOKEN: ${{ secrets.RELEASE_TOKEN }}
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }} 
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}

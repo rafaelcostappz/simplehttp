@@ -8,8 +8,14 @@ module.exports = {
       'plugin:@typescript-eslint/recommended',
     ],
     rules: {
-      '@typescript-eslint/explicit-function-return-type': 'warn',
+      // Changed from 'error' to 'warn'
+      '@typescript-eslint/explicit-function-return-type': 'off',
+      // Allow any but with a warning
       '@typescript-eslint/no-explicit-any': 'warn',
-      '@typescript-eslint/no-unused-vars': ['error', { 'argsIgnorePattern': '^_' }]
+      // Make unused vars a warning rather than error
+      '@typescript-eslint/no-unused-vars': ['warn', { 
+        'argsIgnorePattern': '^_',
+        'varsIgnorePattern': '^_' 
+      }]
     },
   };

@@ -1,0 +1,33 @@
+name: Version Check
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'package.json'
+
+jobs:
+  check-version:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18.x'
+      
+      - name: Check if version was updated
+        run: |
+          git fetch origin ${{ github.base_ref }}
+          BASE_VERSION=$(git show origin/${{ github.base_ref }}:package.json | grep '"version":' | cut -d '"' -f 4)
+          PR_VERSION=$(grep '"version":' package.json | cut -d '"' -f 4)
+          
+          if [ "$BASE_VERSION" = "$PR_VERSION" ]; then
+            echo "::error::Version in package.json has not been updated"
+            exit 1
+          else
+            echo "Version updated from $BASE_VERSION to $PR_VERSION"
+          fi

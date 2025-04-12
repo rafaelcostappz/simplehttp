@@ -42,7 +42,7 @@ export class SimpleHttpError extends Error implements HttpError {
  */
 export class TimeoutError extends SimpleHttpError {
   constructor(timeout: number, request?: RequestInit) {
-    super(`Request timed out after3 ${timeout}ms`, { request });
+    super(`Request timed out after ${timeout}ms`, { request });
     this.name = 'TimeoutError';
     
     // This is needed for instanceof to work correctly in ES5

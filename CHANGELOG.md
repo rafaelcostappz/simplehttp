@@ -1,5 +1,13 @@
 # simple-http-client
 
+## 1.0.2
+
+### Patch Changes
+
+- abd9a68: Correcao do NPM TOKEN
+- aa7f133: correcao 2
+- 6c9f260: Correcao do erro no NPM
+
 ## 1.0.1
 
 ### Patch Changes

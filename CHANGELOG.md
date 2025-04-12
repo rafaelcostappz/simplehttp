@@ -1,5 +1,11 @@
 # simple-http-client
 
+## 1.0.5
+
+### Patch Changes
+
+- 153b26a: teste5
+
 ## 1.0.4
 
 ### Patch Changes

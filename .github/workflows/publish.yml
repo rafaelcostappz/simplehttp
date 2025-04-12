@@ -23,6 +23,14 @@ jobs:
       
       - name: Test
         run: npm test
+        
+      # Novo passo para salvar a build como artefato
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: dist-files
+          path: dist/
+          retention-days: 30
       
       - name: Publish
         run: npm publish

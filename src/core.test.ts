@@ -43,6 +43,18 @@ global.URL = vi.fn() as any;
 (global.URL as any).prototype.toString = vi.fn().mockReturnValue('https://example.com/test');
 (global.URL as any).prototype.search = '';
 
+// Mock crypto for Node.js environments
+if (typeof global.crypto === 'undefined' || !global.crypto.getRandomValues) {
+  global.crypto = {
+    getRandomValues: (array: Uint8Array) => {
+      for (let i = 0; i < array.length; i++) {
+        array[i] = Math.floor(Math.random() * 256);
+      }
+      return array;
+    }
+  } as Crypto;
+}
+
 beforeEach(() => {
   // Initialize mock fetch
   mockFetch = vi.fn().mockImplementation(() => 

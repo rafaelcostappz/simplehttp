@@ -2,9 +2,9 @@ name: CI SimpleHTTP
 
 on:
   push:
-    branches: [main]
+    branches: [development, release]
   pull_request:
-    branches: [main]
+    branches: [development, release, main]
 
 jobs:
   test:

@@ -1,0 +1,46 @@
+name: Promote to Main
+
+on:
+  workflow_dispatch:
+
+jobs:
+  promote:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+          ref: release
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18.x'
+      
+      - name: Install dependencies
+        run: npm ci
+      
+      - name: Run tests
+        run: npm test
+      
+      - name: Create PR to main
+        uses: peter-evans/create-pull-request@v5
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          commit-message: "chore: promover release para main"
+          title: "Promoção: Release → Main"
+          body: |
+            ## Promoção para Main
+            
+            Este PR promove as alterações da branch `release` para a branch `main`.
+            
+            Após a aprovação e merge deste PR, uma nova versão será publicada automaticamente.
+          branch: promote-release-to-main
+          base: main
+          labels: |
+            automated-pr
+            release

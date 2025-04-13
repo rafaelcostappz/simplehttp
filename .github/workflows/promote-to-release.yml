@@ -1,0 +1,56 @@
+name: Promote to Release
+
+on:
+  workflow_dispatch:
+    inputs:
+      version_type:
+        description: 'Tipo de versão (patch, minor, major)'
+        required: true
+        default: 'patch'
+        type: choice
+        options:
+          - patch
+          - minor
+          - major
+
+jobs:
+  promote:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+          ref: development
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18.x'
+      
+      - name: Install dependencies
+        run: npm ci
+      
+      - name: Run tests
+        run: npm test
+      
+      - name: Create PR to release
+        uses: peter-evans/create-pull-request@v5
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          commit-message: "chore: promover development para release"
+          title: "Promoção: Development → Release"
+          body: |
+            ## Promoção para Release
+            
+            Este PR promove as alterações da branch `development` para a branch `release`.
+            
+            Tipo de versão: ${{ github.event.inputs.version_type }}
+          branch: promote-dev-to-release
+          base: release
+          labels: |
+            automated-pr
+            version-${{ github.event.inputs.version_type }}

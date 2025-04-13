@@ -9,7 +9,7 @@ import {
   import { VERSION } from './version';
   
   /**
-   * Creates a query string from a parameters object.
+   * Creates a query string from a parameters object.asd asd asd asd asd as asd asd asd asdasda das das
    */
   function createQueryString(params: Record<string, string | number | boolean>): string {
     const searchParams = new URLSearchParams();

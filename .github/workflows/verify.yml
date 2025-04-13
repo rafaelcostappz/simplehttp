@@ -1,0 +1,44 @@
+name: Verificar e Testar
+
+on:
+  push:
+    branches: [development, release]
+  pull_request:
+    branches: [development, release, main]
+
+jobs:
+  test:
+    name: Test on Node.js ${{ matrix.node-version }}
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [18.x, 20.x]
+
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Setup Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'npm'
+      
+      - name: Install dependencies
+        run: npm ci
+      
+      - name: Lint
+        run: npm run lint
+      
+      - name: Build
+        run: npm run build
+      
+      - name: Test
+        run: npm test
+        
+      - name: Upload build preview (apenas PRs)
+        if: github.event_name == 'pull_request' && (github.base_ref == 'release' || github.base_ref == 'main')
+        uses: actions/upload-artifact@v3
+        with:
+          name: build-preview
+          path: dist/
+          retention-days: 5 

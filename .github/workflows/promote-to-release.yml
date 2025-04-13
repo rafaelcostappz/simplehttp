@@ -14,14 +14,18 @@ on:
           - major
 
 jobs:
+  setup:
+    uses: ./.github/workflows/reusable-setup.yml
+    
   promote:
+    needs: setup
     runs-on: ubuntu-latest
     permissions:
       contents: write
       pull-requests: write
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
           ref: development
@@ -29,14 +33,26 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '18.x'
+          node-version: '20.x'
+          cache: 'npm'
       
       - name: Install dependencies
         run: npm ci
       
       - name: Run tests
         run: npm test
-      
+        
+      - name: Create version bump changeset
+        run: |
+          echo "---
+          \"rafaelcoelhox-http-client\": ${{ github.event.inputs.version_type }}
+          ---
+          
+          Promoção automatizada de development para release" > .changeset/version-bump.md
+          
+      - name: Apply changesets
+        run: npm run release:apply
+        
       - name: Create PR to release
         uses: peter-evans/create-pull-request@v5
         with:
